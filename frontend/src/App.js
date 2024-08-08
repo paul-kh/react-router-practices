@@ -17,6 +17,7 @@ const router = createBrowserRouter([
         path: "events",
         element: <EventsRootLayout />,
         children: [
+          // FETCHING DATA WITH 'loader()'
           // react-router executes `loader()` when about to visit the path '/events'
           // `loader()` gets executed before the <EventPage> gets rendered
           {
