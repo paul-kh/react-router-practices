@@ -17,7 +17,24 @@ const router = createBrowserRouter([
         path: "events",
         element: <EventsRootLayout />,
         children: [
-          { index: true, element: <EventsPage /> },
+          // react-router executes `loader()` when about to visit the path '/events'
+          // `loader()` gets executed before the <EventPage> gets rendered
+          {
+            index: true,
+            element: <EventsPage />,
+            loader: async () => {
+              const response = await fetch("http://localhost:8080/events");
+
+              if (!response.ok) {
+                // to deal with incorrect response
+              } else {
+                const resData = await response.json();
+                // react makes the below returned 'resData' available
+                // through out <EventsPage>  and other components as needed
+                return resData.events;
+              }
+            },
+          },
           { path: ":eventId", element: <EventDetailPage /> },
 
           { path: "new", element: <NewEventPage /> },
